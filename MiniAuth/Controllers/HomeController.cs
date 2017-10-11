@@ -20,8 +20,8 @@ namespace MiniAuth.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                // attach the id_token information if user is signed in
-                // for this to work, options.SaveTokens = true must be set
+                // Attach the id_token information if user is signed in.
+                // For this to work, options.SaveTokens = true must be set
                 // in Startup.ConfigureOpenIdConnect method.
 
                 string idToken = await HttpContext.GetTokenAsync("id_token");

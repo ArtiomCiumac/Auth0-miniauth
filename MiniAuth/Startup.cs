@@ -87,9 +87,9 @@ namespace MiniAuth
         private void ConfigureOpenIdConnect(OpenIdConnectOptions options)
         {
             // set the client settings
-            options.Authority = $"https://{Configuration["Auth0:Domain"]}";
-            options.ClientId = Configuration["Auth0:ClientId"];
-            options.ClientSecret = Configuration["Auth0:ClientSecret"];
+            options.Authority = $"https://{Configuration[Const.ConfigDomainKey]}";
+            options.ClientId = Configuration[Const.ConfigClientIdKey];
+            options.ClientSecret = Configuration[Const.ConfigClientSecretKey];
 
             // specify the authentication flow
             options.ResponseType = "code";
@@ -113,36 +113,34 @@ namespace MiniAuth
 
             options.Events = new OpenIdConnectEvents
             {
-                OnRedirectToIdentityProvider = context =>
-                {
-                    if (context.Properties.Items.ContainsKey("connection"))
-                        context.ProtocolMessage.SetParameter("connection", context.Properties.Items["connection"]);
-
-                    return Task.FromResult(0);
-                },
-
-                OnRedirectToIdentityProviderForSignOut = (context) =>
-                {
-                    var logoutUri = $"https://{Configuration["Auth0:Domain"]}/v2/logout?client_id={Configuration["Auth0:ClientId"]}";
-
-                    var postLogoutUri = context.Properties.RedirectUri;
-                    if (!string.IsNullOrEmpty(postLogoutUri))
-                    {
-                        if (postLogoutUri.StartsWith("/"))
-                        {
-                            // transform to absolute
-                            var request = context.Request;
-                            postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase + postLogoutUri;
-                        }
-                        logoutUri += $"&returnTo={ Uri.EscapeDataString(postLogoutUri)}";
-                    }
-
-                    context.Response.Redirect(logoutUri);
-                    context.HandleResponse();
-
-                    return Task.CompletedTask;
-                }
+                OnRedirectToIdentityProviderForSignOut = HandleRedirectToIdentityProviderForSignOut
             };
+        }
+
+        /// <summary>
+        /// Handles the redirection to IdP for Sign Out flow.
+        /// </summary>
+        private Task HandleRedirectToIdentityProviderForSignOut(RedirectContext context)
+        {
+            var logoutUri = $"https://{Configuration[Const.ConfigDomainKey]}/v2/logout?client_id={Configuration[Const.ConfigClientIdKey]}";
+
+            var postLogoutUri = context.Properties.RedirectUri;
+            if (!string.IsNullOrEmpty(postLogoutUri))
+            {
+                if (postLogoutUri.StartsWith("/"))
+                {
+                    // transform to absolute
+                    var request = context.Request;
+                    postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase + postLogoutUri;
+                }
+
+                logoutUri += $"&returnTo={ Uri.EscapeDataString(postLogoutUri)}";
+            }
+
+            context.Response.Redirect(logoutUri);
+            context.HandleResponse();
+
+            return Task.CompletedTask;
         }
     }
 }
