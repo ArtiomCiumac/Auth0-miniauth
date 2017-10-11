@@ -12,17 +12,32 @@ using Microsoft.AspNetCore.Http;
 
 namespace MiniAuth
 {
+    /// <summary>
+    /// Configures the web application.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Initialize the class instance with the provided app configuration.
+        /// </summary>
+        /// <param name="configuration">The initial app configuration, read from appsettings.json and environment.</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Gets the current app configuration.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Configures the app services.
+        /// </summary>
+        /// <param name="services">The current service container.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            // configure Auth0-related services
             services
                 .AddAuthentication(ConfigureAuthentication)
                 .AddCookie()
@@ -31,6 +46,11 @@ namespace MiniAuth
             services.AddMvc();
         }
 
+        /// <summary>
+        /// Configures the app, depending on the hosting environment.
+        /// </summary>
+        /// <param name="app">The app to configure.</param>
+        /// <param name="env">The hosting environment information.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -39,7 +59,7 @@ namespace MiniAuth
                 app.UseExceptionHandler("/Home/Error");
 
             app.UseStaticFiles();
-            app.UseAuthentication();
+            app.UseAuthentication(); // enable the authentication
 
             app.UseMvc(routes =>
             {
@@ -49,6 +69,10 @@ namespace MiniAuth
             });
         }
 
+        /// <summary>
+        /// Configures authentication scheme.
+        /// </summary>
+        /// <param name="options">The options to store the configuration.</param>
         private void ConfigureAuthentication(AuthenticationOptions options)
         {
             options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -56,14 +80,21 @@ namespace MiniAuth
             options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         }
 
+        /// <summary>
+        /// Configures the Auth0 OIDC provider.
+        /// </summary>
+        /// <param name="options">The options to store the configuration.</param>
         private void ConfigureOpenIdConnect(OpenIdConnectOptions options)
         {
+            // set the client settings
             options.Authority = $"https://{Configuration["Auth0:Domain"]}";
             options.ClientId = Configuration["Auth0:ClientId"];
             options.ClientSecret = Configuration["Auth0:ClientSecret"];
 
+            // specify the authentication flow
             options.ResponseType = "code";
 
+            // set the scopes
             options.Scope.Clear();
             options.Scope.Add("openid");
             options.Scope.Add("profile");
@@ -71,8 +102,9 @@ namespace MiniAuth
 
             options.CallbackPath = new PathString("/signin-auth0");
             options.ClaimsIssuer = "Auth0";
-            options.SaveTokens = true;
+            options.SaveTokens = true; // save obtained tokens for local inspection and debugging
 
+            // specify the claims mapping settings
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 NameClaimType = "name",

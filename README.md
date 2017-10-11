@@ -4,9 +4,9 @@ Minimal ASP.NET Core MVC App using Auth0 authentication
 
 ## Requirements
 
-The app is built on `ASP.NET Core 2.0` with mvc and `Auth0` authentication.
+The app is built on `ASP.NET Core 2.0` with MVC and `Auth0` authentication.
  Windows 10 + Visual Studio 2017 with latest updates were used, but it should
- run on any OS supported by .NET Core.
+ run on any OS supported by [.NET Core](https://www.microsoft.com/net/core).
 
 ## Auth0 configuration
 
