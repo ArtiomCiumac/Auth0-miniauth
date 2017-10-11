@@ -26,6 +26,7 @@ For the Auth0 client, configure the following values as described
  [here](https://auth0.com/docs/quickstart/webapp/aspnet-core/00-intro#configure-callback-urls):
 
 In "Callback URLs" add `http://localhost:61766/signin-auth0`
+
 In "Allowed Logout URLs" add `http://localhost:61766/`
 
 _Note: Adjust the URLs accordingly if you run it on another local development web server._
@@ -42,6 +43,7 @@ For the Auth0 client, configure the following values as described
  [here](https://auth0.com/docs/quickstart/webapp/aspnet-core/00-intro#configure-callback-urls):
 
 In "Callback URLs" add `<YOUR DEPLOYMENT URL>/signin-auth0`
+
 In "Allowed Logout URLs" add `<YOUR DEPLOYMENT URL>`
 
 Where `<YOUR DEPLOYMENT URL>` can be something like
@@ -54,4 +56,4 @@ _Note: Adjust the URLs accordingly if you run it on another local development
 
 All functionality is concentrated in files `Startup.cs` and
  `Controllers/AccountController.cs` as per
- [Auth0 tutorial](https://auth0.com/docs/quickstart/webapp/aspnet-core/v2/00-intro)
+ [Auth0 tutorial](https://auth0.com/docs/quickstart/webapp/aspnet-core/v2/00-intro).
