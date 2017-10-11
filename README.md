@@ -57,3 +57,6 @@ _Note: Adjust the URLs accordingly if you run it on another local development
 All functionality is concentrated in files `Startup.cs` and
  `Controllers/AccountController.cs` as per
  [Auth0 tutorial](https://auth0.com/docs/quickstart/webapp/aspnet-core/v2/00-intro).
+
+The app on Azure may fail silently if Auth0 environment variables are not
+ configured. See the **Running on hosting** section on how to configure it.
