@@ -10,9 +10,10 @@ The app is built on `ASP.NET Core 2.0` with MVC and `Auth0` authentication.
 
 ## Auth0 configuration
 
-1. Create a new "Regular Web Applications" [client](https://auth0.com/docs/clients) in you target Auth0 tenant.
+1. Create a new "Regular Web Applications" [client](https://auth0.com/docs/clients)
+   in you target Auth0 tenant.
 2. Get the [application keys](https://auth0.com/docs/quickstart/webapp/aspnet-core/00-intro#get-your-application-keys)
-   that will be in the next sections below.
+   that will be used in the next sections below.
 
 ## Running locally
 
@@ -48,9 +49,6 @@ In "Allowed Logout URLs" add `<YOUR DEPLOYMENT URL>`
 
 Where `<YOUR DEPLOYMENT URL>` can be something like
  `https://myauth0app-test.azurewebsites.net/` for deployments on Azure Web Apps.
-
-_Note: Adjust the URLs accordingly if you run it on another local development
- web server._
 
 ## Hints
 
